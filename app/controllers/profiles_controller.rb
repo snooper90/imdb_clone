@@ -1,6 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :set_profile, only: [:show, :edit, :update, :destroy]
-   before_action :set_profile, only: [:show, :edit, :update]
+  before_action :set_profile, only: [:show, :edit, :update]
   before_action :authenticate_user!
 
   # GET /profiles/1
@@ -11,7 +11,7 @@ class ProfilesController < ApplicationController
 
   # GET /profiles/new
   def new
-    @profile = Profile.new
+    @profile = current_user.build_profile
   end
 
   # GET /profiles/1/edit
@@ -37,14 +37,10 @@ class ProfilesController < ApplicationController
   # PATCH/PUT /profiles/1
   # PATCH/PUT /profiles/1.json
   def update
-    respond_to do |format|
-      if @profile.update(profile_params)
-        format.html { redirect_to @profile, notice: 'Profile was successfully updated.' }
-        format.json { render :show, status: :ok, location: @profile }
-      else
-        format.html { render :edit }
-        format.json { render json: @profile.errors, status: :unprocessable_entity }
-      end
+    if @movie.update_attributes(movie_params)
+      redirect_to movie_path
+    else
+      render :edit
     end
   end
 
